@@ -10,15 +10,116 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const prompts = [
+const employees = [];
+
+const countPrompts = [
   {
     type: "input",
     message: "How many engineers are in your team?",
     name: "engineerCount",
   },
+  {
+    type: "input",
+    message: "How many interns are in your team?",
+    name: "internCount",
+  },
 ];
 
-inquirer.prompt(prompts).then((answers) => {});
+const managerPrompts = [
+  {
+    type: "input",
+    message: "Enter manager name",
+    name: "name",
+  },
+  {
+    type: "input",
+    message: "Enter manager id",
+    name: "id",
+  },
+  {
+    type: "input",
+    message: "Enter manager email",
+    name: "email",
+  },
+  {
+    type: "input",
+    message: "Enter manager office number",
+    name: "officeNumber",
+  },
+];
+
+const engineerPrompts = [
+  {
+    type: "input",
+    message: "Enter engineer name",
+    name: "name",
+  },
+  {
+    type: "input",
+    message: "Enter engineer id",
+    name: "id",
+  },
+  {
+    type: "input",
+    message: "Enter engineer email",
+    name: "email",
+  },
+  {
+    type: "input",
+    message: "Enter engineer Github",
+    name: "github",
+  },
+];
+
+const internPrompts = [
+  {
+    type: "input",
+    message: "Enter intern name",
+    name: "name",
+  },
+  {
+    type: "input",
+    message: "Enter intern id",
+    name: "id",
+  },
+  {
+    type: "input",
+    message: "Enter intern email",
+    name: "email",
+  },
+  {
+    type: "input",
+    message: "Enter intern school",
+    name: "school",
+  },
+];
+
+async function buildTeam() {
+  const manager = await inquirer.prompt(managerPrompts);
+  const engineer = await inquirer.prompt(engineerPrompts);
+  const intern = await inquirer.prompt(internPrompts);
+
+  employees.push(
+    new Manager(manager.name, manager.id, manager.email, manager.officeNumber)
+  );
+  employees.push(
+    new Engineer(engineer.name, engineer.id, engineer.email, engineer.github)
+  );
+  employees.push(
+    new Intern(intern.name, intern.id, intern.email, intern.school)
+  );
+
+  const html = render(employees);
+
+  fs.writeFile("team.html", html, function (err) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log("Success!");
+  });
+}
+
+buildTeam();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
