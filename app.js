@@ -10,6 +10,15 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const prompts = [
+  {
+    type: "input",
+    message: "How many engineers are in your team?",
+    name: "engineerCount",
+  },
+];
+
+inquirer.prompt(prompts).then((answers) => {});
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
