@@ -94,20 +94,45 @@ const internPrompts = [
   },
 ];
 
+const engineerCountPrompt = [
+  {
+    type: "input",
+    message: "Enter number of Engineers on your team.",
+    name: "count",
+  },
+];
+
+const internCountPrompt = [
+  {
+    type: "input",
+    message: "Enter number of Interns on your team.",
+    name: "count",
+  },
+];
+
 async function buildTeam() {
   const manager = await inquirer.prompt(managerPrompts);
-  const engineer = await inquirer.prompt(engineerPrompts);
-  const intern = await inquirer.prompt(internPrompts);
-
   employees.push(
     new Manager(manager.name, manager.id, manager.email, manager.officeNumber)
   );
-  employees.push(
-    new Engineer(engineer.name, engineer.id, engineer.email, engineer.github)
-  );
-  employees.push(
-    new Intern(intern.name, intern.id, intern.email, intern.school)
-  );
+
+  const engineerCount = await inquirer.prompt(engineerCountPrompt);
+
+  for (let i = 0; i < engineerCount.count; i++) {
+    let engineer = await inquirer.prompt(engineerPrompts);
+    employees.push(
+      new Engineer(engineer.name, engineer.id, engineer.email, engineer.github)
+    );
+  }
+
+  const internCount = await inquirer.prompt(internCountPrompt);
+
+  for (let i = 0; i < internCount.count; i++) {
+    let intern = await inquirer.prompt(internPrompts);
+    employees.push(
+      new Intern(intern.name, intern.id, intern.email, intern.school)
+    );
+  }
 
   const html = render(employees);
 
@@ -115,7 +140,6 @@ async function buildTeam() {
     if (err) {
       return console.log(err);
     }
-    console.log("Success!");
   });
 }
 
