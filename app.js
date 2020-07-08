@@ -136,7 +136,7 @@ async function buildTeam() {
 
   const html = render(employees);
 
-  fs.writeFile("team.html", html, function (err) {
+  fs.writeFile(outputPath, html, function (err) {
     if (err) {
       return console.log(err);
     }
